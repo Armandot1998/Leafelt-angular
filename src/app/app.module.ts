@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 import { HttpClientModule } from '@angular/common/http';
 import { GeopositionService } from './services/geoposition.service';
+import { MarkerService } from './services/marker.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,9 @@ import { GeopositionService } from './services/geoposition.service';
     LeafletModule,
     HttpClientModule
   ],
-  providers: [GeopositionService],
+  providers: [
+    GeopositionService,
+    MarkerService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

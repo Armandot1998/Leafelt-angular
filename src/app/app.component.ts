@@ -1,5 +1,9 @@
 import { GeopositionService } from './services/geoposition.service';
+import { MarkerService } from './services/marker.service';
 import { Component, AfterViewInit } from '@angular/core';
+import { Observable } from "rxjs";
+import { PointService } from "./services/point.service";
+import { Point } from "./models/point";
 import * as L from 'leaflet';
 
 @Component({
@@ -10,10 +14,14 @@ import * as L from 'leaflet';
 export class AppComponent implements AfterViewInit {
   private map;
   private popup;
-  constructor(private geopositionService: GeopositionService) { 
+  
+  points: Observable<Point[]>;
+  constructor(private geopositionService: GeopositionService, private pointService: PointService,
+    private markerService: MarkerService) { 
   }
 
   ngAfterViewInit(): void {
+    this.reloadData;
     this.initMap();
     this.geopositionService.getPosition().then(pos=>
       {
@@ -22,7 +30,8 @@ export class AppComponent implements AfterViewInit {
 
         L.marker([pos.lat, pos.lng]).addTo(this.map);
       });
-      
+    this.markerService.makeCapitalMarkers(this.map);
+    
   }
 
   private initMap(): void {
@@ -50,7 +59,9 @@ private onMapClick(e) {
   console.log(`Latitud:`+lat);
 }
 
-
+reloadData() {
+  this.points = this.pointService.getPointsList();
+}
 
 
  
