@@ -5,6 +5,8 @@ import { Observable } from "rxjs";
 import { PointService } from "./services/point.service";
 import { Point } from "./models/point";
 import * as L from 'leaflet';
+import "leaflet/dist/images/marker-shadow.png";
+import "leaflet/dist/images/marker-shadow.png";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,6 @@ import * as L from 'leaflet';
 })
 export class AppComponent implements AfterViewInit {
   private map;
-  private popup;
   
   points: Observable<Point[]>;
   constructor(private geopositionService: GeopositionService, private pointService: PointService,
