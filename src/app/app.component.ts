@@ -1,9 +1,6 @@
 import { GeopositionService } from './services/geoposition.service';
 import { MarkerService } from './services/marker.service';
 import { Component, AfterViewInit } from '@angular/core';
-import { Observable } from "rxjs";
-import { PointService } from "./services/point.service";
-import { Point } from "./models/point";
 import * as L from 'leaflet';
 import "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/images/marker-shadow.png";
@@ -15,21 +12,21 @@ import "leaflet/dist/images/marker-shadow.png";
 })
 export class AppComponent implements AfterViewInit {
   private map;
+  private lat;
+  private lng;
   
-  points: Observable<Point[]>;
-  constructor(private geopositionService: GeopositionService, private pointService: PointService,
+  constructor(private geopositionService: GeopositionService, 
     private markerService: MarkerService) { 
   }
 
   ngAfterViewInit(): void {
-    this.reloadData;
     this.initMap();
     this.geopositionService.getPosition().then(pos=>
       {
-        console.log(`longitud: ${pos.lng}`);
-        console.log(`Latitud: ${pos.lat}`);
+        this.lat = pos.lat;
+        this.lng= pos.lng;
 
-        L.marker([pos.lat, pos.lng]).addTo(this.map);
+        L.marker([this.lat, this.lng]).addTo(this.map);
       });
     this.markerService.makeCapitalMarkers(this.map);
     
@@ -53,15 +50,13 @@ export class AppComponent implements AfterViewInit {
   }
 
 private onMapClick(e) {
-  var lat = e.latlng.lat;
-  var long = e.latlng.lng;
+  this.lat = e.latlng.lat;
+  this.lng = e.latlng.lng;
 
-  console.log(`longitud:`+ long);
-  console.log(`Latitud:`+lat);
-}
-
-reloadData() {
-  this.points = this.pointService.getPointsList();
+  L.marker([this.lat, this.lng]).addTo(this.map);
+  
+  console.log(`longitud:`+ this.lng);
+  console.log(`Latitud:`+ this.lat);
 }
 
 

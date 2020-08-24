@@ -17,7 +17,9 @@ export class MarkerService {
         const lat = c.lat;
         const lon = c.long;
         console.log(lon, lat);
-        L.marker([lat, lon]).addTo(map);
+        L.marker([lat, lon]).addTo(map)
+        .bindPopup( ` ${ c.nombre }`)
+        .openPopup();
       }
     });
   }
